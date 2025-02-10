@@ -6,10 +6,11 @@ import "@fontsource/roboto/700.css";
 import "./globals.css";
 import DrawerComponent from "@/components/drawer";
 import AppBarComponent from "@/components/app-bar";
-import { Box, Toolbar } from "@mui/material";
+import { Box, Button, Toolbar } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { AppProvider } from "@/context/app";
+import SpinnerComponent from "@/components/spinner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -37,18 +38,19 @@ const RootLayout = ({ children }) => {
             sx={{
               display: "flex",
               flexDirection: "column",
-              minHeight: "100vh",
+              height: "100vh",
             }}
           >
-            <CssBaseline />
             <AppBarComponent />
             <Box sx={{ display: "flex", flexGrow: 1 }}>
               <DrawerComponent />
               <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
                 <Toolbar />
+                <CssBaseline />
                 {children}
               </Box>
             </Box>
+            <SpinnerComponent />
           </Box>
         </AppProvider>
       </body>
