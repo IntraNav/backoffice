@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { COLORS } from "@/constants/system";
 import { drawerRoutes } from "@/constants/ui/drawer";
 import { useAppContext } from "@/context/app";
@@ -13,21 +14,30 @@ import {
   ListItem,
   ListItemButton,
   ListItemText,
-  Tooltip
+  Tooltip,
 } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import Image from "next/image";
-import { useRouter as useNavigationRouter } from "next/navigation";
 import Logo from "../../../public/images/logo.png";
+import { usePathname, useRouter } from "next/navigation";
 
 const DrawerComponent = () => {
-  const navigationRouter = useNavigationRouter();
+  const pathName = usePathname();
+  const navigationRouter = useRouter();
+
   const theme = useTheme();
-  const { drawerOpen, toggleDrawer, mounted } = useAppContext();
+  const { drawerOpen, toggleDrawer, mounted, loading } = useAppContext();
 
   const handleNavigation = (to) => {
+    if (loading) {
+      toggleDrawer();
+    }
     navigationRouter.replace(to);
   };
+
+  useEffect(() => {
+    console.log("pathName", pathName);
+  }, [pathName]);
 
   return (
     mounted && (
@@ -61,17 +71,39 @@ const DrawerComponent = () => {
 
         <Divider />
 
-        <List sx={{}}>
-          {(drawerRoutes ?? []).map((r, index) =>
-            Object.keys(r).length ? (
-              <ListItem key={index} disablePadding>
-                <ListItemButton onClick={() => handleNavigation(r?.path)}>
+        <List sx={{ px: 1 }}>
+          {(drawerRoutes ?? []).map((r, index) => {
+            let active = r?.path === pathName;
+
+            return Object.keys(r).length ? (
+              <ListItem
+                key={index}
+                disablePadding
+                sx={{
+                  borderRadius: 1,
+                  mb: 1,
+                  bgcolor: `${COLORS[active ? "PRIMARY" : ""]}`,
+                  color: `${COLORS[active ? "WHITE" : ""]}`,
+                  borderBottom: active ? `3px solid ${COLORS.WHITE}` : null,
+                }}
+              >
+                <ListItemButton
+                  sx={{
+                    pointerEvents: active ? "none" : "",
+                    py: 0.1,
+                  }}
+                  onClick={() => handleNavigation(r?.path)}
+                >
                   {r?.icon}
-                  <ListItemText sx={{ pl: 1 }} primary={r.title} />
+                  <ListItemText
+                    sx={{ pl: 1 }}
+                    primary={r.title}
+                    style={{ fontSize: "10px" }}
+                  />
                 </ListItemButton>
               </ListItem>
-            ) : null
-          )}
+            ) : null;
+          })}
         </List>
       </Drawer>
     )
