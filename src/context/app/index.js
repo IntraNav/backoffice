@@ -1,15 +1,17 @@
 "use client";
 
 import { createContext, useContext, useEffect, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
   const pathname = usePathname();
+  const router = useRouter();
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const toggleDrawer = () => {
     setDrawerOpen((prev) => !prev);
@@ -17,17 +19,23 @@ export const AppProvider = ({ children }) => {
 
   useEffect(() => {
     setMounted(!!pathname);
-
-    console.log("is mounted", !!pathname);
+    setLoading(true);
   }, [pathname]);
+
+  useEffect(() => {
+    //
+    console.log("router", router);
+  }, [router]);
 
   const contextValues = {
     // vars
     mounted,
+    loading,
     drawerOpen,
 
     // FNs
     setMounted,
+    setLoading,
     toggleDrawer,
     setDrawerOpen,
   };
