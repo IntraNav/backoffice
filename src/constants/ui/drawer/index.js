@@ -1,15 +1,19 @@
-import { Dashboard, Message } from "@mui/icons-material";
+import { Dashboard, GroupRounded, Message } from "@mui/icons-material";
+
+const iconProps = {
+  fontSize: 15,
+};
 
 export const drawerRoutes = [
   {
     title: "Dashboard",
     path: "/",
-    icon: <Dashboard fontSize="12px" />,
+    icon: <Dashboard sx={{ ...iconProps }} />,
   },
 
   {
     title: "Dummy",
     path: "/dummy",
-    icon: <Message fontSize="12px" />,
+    icon: <Message sx={{ ...iconProps }} />,
   },
 ];
