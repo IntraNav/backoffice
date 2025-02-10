@@ -1,3 +1,5 @@
+"use client";
+
 import { COLORS } from "@/constants/system";
 import { Warning } from "@mui/icons-material";
 import { Box, Typography } from "@mui/material";
