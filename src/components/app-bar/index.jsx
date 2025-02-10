@@ -10,7 +10,7 @@ import {
 import React from "react";
 import { styled } from "@mui/material/styles";
 import { useAppContext } from "@/context/app";
-import { COLORS } from "@/constants/system";
+import { COLORS, APP } from "@/constants/system";
 
 const drawerWidth = "15vw";
 
@@ -32,26 +32,36 @@ const AppBar = styled(MuiAppBar, {
 }));
 
 const AppBarComponent = () => {
-  const { drawerOpen, toggleDrawer } = useAppContext();
+  const { drawerOpen, toggleDrawer, loading } = useAppContext();
 
   return (
     <AppBar
-      position="fixed"
+      position={`fixed`}
       drawerOpen={drawerOpen}
-      sx={{ bgcolor: COLORS.BACKGROUND }}
+      sx={{ bgcolor: !loading ? COLORS.BACKGROUND : "transparent" }}
     >
-      <Toolbar>
+      <Toolbar sx={{}}>
         <IconButton
+          disabled={loading}
           color="inherit"
           aria-label="open drawer"
           onClick={toggleDrawer}
           edge="start"
-          sx={{ mr: 2, ...(drawerOpen && { display: "none" }) }}
+          sx={{
+            mr: 2,
+            color: COLORS.PRIMARY,
+            ...(drawerOpen && { display: "none" }),
+          }}
         >
           <Menu />
         </IconButton>
-        <Typography variant="h6" noWrap component="div">
-          Persistent drawer
+        <Typography
+          variant="h6"
+          noWrap
+          component="div"
+          sx={{ color: COLORS.PRIMARY }}
+        >
+          {APP.NAME}
         </Typography>
       </Toolbar>
     </AppBar>
